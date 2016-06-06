@@ -35,7 +35,7 @@ let simpleGet1len = size_t(strlen(simpleGet1))
 
 
 var count = 0 // to make sure that the optimizer doesn't kill the callbacks?
-let parser = HTTPParser(type: .Request)
+var parser = HTTPParser(type: .Request)
 parser.onMessageBegin    { _ in count += 1; return 0 }
 parser.onHeadersComplete { _ in count += 1; return 0 }
 parser.onHeaderField     { _ in count += 1; return 0 }
