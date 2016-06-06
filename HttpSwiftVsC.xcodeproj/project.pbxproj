@@ -44,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E837B3DF1D06323900884455 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E8CA275B1D0616500024FC30 /* TestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestData; sourceTree = "<group>"; };
 		E8CA275C1D0616F10024FC30 /* timespec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = timespec.swift; sourceTree = "<group>"; };
 		E8CA275E1D0619610024FC30 /* timespec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timespec.h; sourceTree = "<group>"; };
@@ -92,6 +93,7 @@
 		E8D883781D06009C007D7307 = {
 			isa = PBXGroup;
 			children = (
+				E837B3DF1D06323900884455 /* README.md */,
 				E8CA275B1D0616500024FC30 /* TestData */,
 				E8DD1C131D061229001F60FE /* HttpParserSwift */,
 				E8DD1C1E1D061238001F60FE /* HttpParserC */,
@@ -301,6 +303,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -340,6 +343,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_DISABLE_SAFETY_CHECKS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
