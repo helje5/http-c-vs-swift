@@ -63,3 +63,22 @@ Swift 3 2016-05-31
     [4] time: 904ms
     -----
     Total: 4516ms COUNT: 20
+
+#### Instruments Says
+
+- lots of ARC killing perf
+
+### struct-parser branch
+
+Swift 2.2
+
+    [0] time: 886ms
+    [1] time: 880ms
+    [2] time: 879ms
+    [3] time: 876ms
+    [4] time: 889ms
+    -----
+    Total: 4410ms COUNT: 20
+
+Improv not measurable, but then we allocate the parser object just once.
+
