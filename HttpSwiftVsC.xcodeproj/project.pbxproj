@@ -46,6 +46,7 @@
 /* Begin PBXFileReference section */
 		E8CA275B1D0616500024FC30 /* TestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestData; sourceTree = "<group>"; };
 		E8CA275C1D0616F10024FC30 /* timespec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = timespec.swift; sourceTree = "<group>"; };
+		E8CA275E1D0619610024FC30 /* timespec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timespec.h; sourceTree = "<group>"; };
 		E8DD1C111D061228001F60FE /* HttpParserSwift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HttpParserSwift; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8DD1C141D061229001F60FE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E8DD1C1D1D061238001F60FE /* HttpParserC */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HttpParserC; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,6 +139,7 @@
 				E8DD1C241D0612CA001F60FE /* AUTHORS */,
 				E8DD1C251D0612CA001F60FE /* CONTRIBUTIONS */,
 				E8DD1C281D0612CA001F60FE /* LICENSE-MIT */,
+				E8CA275E1D0619610024FC30 /* timespec.h */,
 			);
 			path = HttpParserC;
 			sourceTree = "<group>";
