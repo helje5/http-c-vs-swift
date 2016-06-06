@@ -8,5 +8,12 @@
 
 import Foundation
 
+
+let startTS = timespec.monotonic()
+
 print("Hello, World!")
 
+let endTS = timespec.monotonic()
+let diff  = (endTS - startTS).milliseconds
+
+print("time: \(diff)ms")

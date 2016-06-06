@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E8CA275D1D0616F10024FC30 /* timespec.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CA275C1D0616F10024FC30 /* timespec.swift */; };
 		E8DD1C151D061229001F60FE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C141D061229001F60FE /* main.swift */; };
 		E8DD1C201D061238001F60FE /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C1F1D061238001F60FE /* main.c */; };
 		E8DD1C2A1D0612CA001F60FE /* http_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C261D0612CA001F60FE /* http_parser.c */; };
@@ -43,6 +44,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E8CA275B1D0616500024FC30 /* TestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestData; sourceTree = "<group>"; };
+		E8CA275C1D0616F10024FC30 /* timespec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = timespec.swift; sourceTree = "<group>"; };
 		E8DD1C111D061228001F60FE /* HttpParserSwift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HttpParserSwift; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8DD1C141D061229001F60FE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E8DD1C1D1D061238001F60FE /* HttpParserC */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HttpParserC; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,6 +91,7 @@
 		E8D883781D06009C007D7307 = {
 			isa = PBXGroup;
 			children = (
+				E8CA275B1D0616500024FC30 /* TestData */,
 				E8DD1C131D061229001F60FE /* HttpParserSwift */,
 				E8DD1C1E1D061238001F60FE /* HttpParserC */,
 				E8DD1C121D061228001F60FE /* Products */,
@@ -119,6 +123,7 @@
 				E8DD1C361D061309001F60FE /* README.md */,
 				E8DD1C2D1D061309001F60FE /* AUTHORS */,
 				E8DD1C351D061309001F60FE /* LICENSE-MIT */,
+				E8CA275C1D0616F10024FC30 /* timespec.swift */,
 			);
 			path = HttpParserSwift;
 			sourceTree = "<group>";
@@ -223,6 +228,7 @@
 				E8DD1C3B1D061309001F60FE /* HTTPMethod.swift in Sources */,
 				E8DD1C3E1D061309001F60FE /* HTTPParserState.swift in Sources */,
 				E8DD1C411D061309001F60FE /* URLParser.swift in Sources */,
+				E8CA275D1D0616F10024FC30 /* timespec.swift in Sources */,
 				E8DD1C381D061309001F60FE /* ascii.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +443,7 @@
 				E8DD1C171D061229001F60FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E8DD1C211D061238001F60FE /* Build configuration list for PBXNativeTarget "HttpParserC" */ = {
 			isa = XCConfigurationList;
@@ -445,6 +452,7 @@
 				E8DD1C231D061238001F60FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
