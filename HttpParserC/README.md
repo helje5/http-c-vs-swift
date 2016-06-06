@@ -1,14 +1,11 @@
-**Note** This is a block based variant which uses a malloc/free for the parser
-object and the callbacks structure. Lame, I know.
-Do not use this unless you know what your are doin'! ;-)
-
-
 HTTP Parser
 ===========
 
+[![Build Status](https://travis-ci.org/joyent/http-parser.png?branch=master)](https://travis-ci.org/joyent/http-parser)
+
 This is a parser for HTTP messages written in C. It parses both requests and
 responses. The parser is designed to be used in performance HTTP
-applications. It does not make any syscalls ~~nor allocations~~, it does not
+applications. It does not make any syscalls nor allocations, it does not
 buffer data, it can be interrupted at anytime. Depending on your
 architecture, it only requires about 40 bytes of data per message
 stream (in a web server that is per connection).
@@ -47,10 +44,6 @@ settings.on_header_field = my_header_field_callback;
 
 http_parser *parser = malloc(sizeof(http_parser));
 http_parser_init(parser, HTTP_REQUEST);
-
-http_parser_set_on_url = ^{ ... }
-http_parser_set_on_header_field = ^{ ... }
-
 parser->data = my_socket;
 ```
 
@@ -70,7 +63,7 @@ if (recved < 0) {
 /* Start up / continue the parser.
  * Note we pass recved==0 to signal that EOF has been received.
  */
-nparsed = http_parser_execute(parser, buf, recved);
+nparsed = http_parser_execute(parser, &settings, buf, recved);
 
 if (parser->upgrade) {
   /* handle new protocol */
@@ -82,7 +75,7 @@ if (parser->upgrade) {
 HTTP needs to know where the end of the stream is. For example, sometimes
 servers send responses without Content-Length and expect the client to
 consume input (for the body) until EOF. To tell http_parser about EOF, give
-`0` as the forth parameter to `http_parser_execute()`. Callbacks and errors
+`0` as the fourth parameter to `http_parser_execute()`. Callbacks and errors
 can still be encountered during an EOF, so one must still be prepared
 to receive them.
 
@@ -101,7 +94,7 @@ The Special Problem of Upgrade
 ------------------------------
 
 HTTP supports upgrading the connection to a different protocol. An
-increasingly common example of this is the Web Socket protocol which sends
+increasingly common example of this is the WebSocket protocol which sends
 a request like
 
         GET /demo HTTP/1.1
@@ -113,11 +106,11 @@ a request like
 
 followed by non-HTTP data.
 
-(See http://tools.ietf.org/html/draft-hixie-thewebsocketprotocol-75 for more
-information the Web Socket protocol.)
+(See [RFC6455](https://tools.ietf.org/html/rfc6455) for more information the
+WebSocket protocol.)
 
 To support this, the parser will treat this as a normal HTTP message without a
-body. Issuing both on_headers_complete and on_message_complete callbacks. However
+body, issuing both on_headers_complete and on_message_complete callbacks. However
 http_parser_execute() will stop parsing at the end of the headers and return.
 
 The user is expected to check if `parser->upgrade` has been set to 1 after
@@ -135,14 +128,77 @@ save certain data for later usage, you can do that from the callbacks.
 
 There are two types of callbacks:
 
-* notification `typedef int (^http_cb) (http_parser*);`
+* notification `typedef int (*http_cb) (http_parser*);`
     Callbacks: on_message_begin, on_headers_complete, on_message_complete.
-* data `typedef int (^http_data_cb) (http_parser*, const char *at, size_t length);`
-    Callbacks: (requests only) on_uri,
+* data `typedef int (*http_data_cb) (http_parser*, const char *at, size_t length);`
+    Callbacks: (requests only) on_url,
                (common) on_header_field, on_header_value, on_body;
 
 Callbacks must return 0 on success. Returning a non-zero value indicates
 error to the parser, making it exit immediately.
+
+For cases where it is necessary to pass local information to/from a callback,
+the `http_parser` object's `data` field can be used.
+An example of such a case is when using threads to handle a socket connection,
+parse a request, and then give a response over that socket. By instantiation
+of a thread-local struct containing relevant data (e.g. accepted socket,
+allocated memory for callbacks to write into, etc), a parser's callbacks are
+able to communicate data between the scope of the thread and the scope of the
+callback in a threadsafe manner. This allows http-parser to be used in
+multi-threaded contexts.
+
+Example:
+```
+ typedef struct {
+  socket_t sock;
+  void* buffer;
+  int buf_len;
+ } custom_data_t;
+
+
+int my_url_callback(http_parser* parser, const char *at, size_t length) {
+  /* access to thread local custom_data_t struct.
+  Use this access save parsed data for later use into thread local
+  buffer, or communicate over socket
+  */
+  parser->data;
+  ...
+  return 0;
+}
+
+...
+
+void http_parser_thread(socket_t sock) {
+ int nparsed = 0;
+ /* allocate memory for user data */
+ custom_data_t *my_data = malloc(sizeof(custom_data_t));
+
+ /* some information for use by callbacks.
+ * achieves thread -> callback information flow */
+ my_data->sock = sock;
+
+ /* instantiate a thread-local parser */
+ http_parser *parser = malloc(sizeof(http_parser));
+ http_parser_init(parser, HTTP_REQUEST); /* initialise parser */
+ /* this custom data reference is accessible through the reference to the
+ parser supplied to callback functions */
+ parser->data = my_data;
+
+ http_parser_settings settings; / * set up callbacks */
+ settings.on_url = my_url_callback;
+
+ /* execute parser */
+ nparsed = http_parser_execute(parser, &settings, buf, recved);
+
+ ...
+ /* parsed information copied from callback.
+ can now perform action on data copied into thread-local memory from callbacks.
+ achieves callback -> thread information flow */
+ my_data->buffer;
+ ...
+}
+
+```
 
 In case you parse HTTP message in chunks (i.e. `read()` request line
 from socket, parse, read half headers, parse, etc) your data callbacks
@@ -152,7 +208,7 @@ buffer to avoid copying memory around if this fits your application.
 
 Reading headers may be a tricky task if you read/parse headers partially.
 Basically, you need to remember whether last header callback was field or value
-and apply following logic:
+and apply the following logic:
 
     (on_header_field and on_header_value shortened to on_h_*)
      ------------------------ ------------ --------------------------------------------
