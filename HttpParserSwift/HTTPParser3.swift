@@ -122,10 +122,10 @@ public class HTTPParser {
     self.state = startState
   }
 
-  public func reset() {
-    self.type              = .Both
+  public func reset(type t: HTTPParserType = .Both) {
+    self.type              = t
     self.flags             = HTTPParserOptions()
-    self.state             = .s_dead
+    self.state             = startState
     self.header_state      = .h_general
     self.index             = 0
     self.nread             = 0
