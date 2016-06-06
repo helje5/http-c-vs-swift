@@ -52,8 +52,8 @@ public enum HTTPParserType {
   case Both
 }
 
-public typealias http_data_cb = ( HTTPParser, UnsafePointer<CChar>, size_t) -> Int
-public typealias http_cb      = ( HTTPParser ) -> Int
+public typealias http_data_cb =  @convention(c) ( UnsafePointer<HTTPParser>, UnsafePointer<CChar>, size_t) -> Int32
+public typealias http_cb      =  @convention(c) ( UnsafePointer<HTTPParser> ) -> Int32
 
 public struct HTTPParser {
   // TBD: this could be a struct, except maybe for the callbacks - those would
