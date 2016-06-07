@@ -70,6 +70,9 @@ Swift 3 2016-05-31
 
 ### struct-parser branch
 
+In this the parser object is a struct, hence no dynamic dispatch on parser
+funcs.
+
 Swift 2.2
 
     [0] time: 886ms
@@ -82,3 +85,34 @@ Swift 2.2
 
 Improv not measurable, but then we allocate the parser object just once.
 
+### lookup-tables branch
+
+In this the Swift-array lookup tables are replaced with UnsafePointer<T> to
+avoid runtime checks.
+
+Swift 2.2
+
+    [0] time: 853ms
+    [1] time: 850ms
+    [2] time: 847ms
+    [3] time: 850ms
+    [4] time: 851ms
+    -----
+    Total: 4251ms COUNT: 20
+
+A little better, but not much.
+
+### always-inline branch
+
+Make funcs which used to be macros in C always-inline. This gives some
+break-through.
+
+    [0] time: 165ms
+    [1] time: 166ms
+    [2] time: 161ms
+    [3] time: 163ms
+    [4] time: 161ms
+    -----
+    Total: 816ms COUNT: 20
+
+Swift 816ms vs C 490ms
