@@ -144,8 +144,12 @@ private let tokensO : [ CChar ] = [
        cx,      cy,      cz,       0,  cVDASH,      0,  cTILDE,       0 ]
 private let tokens : UnsafePointer<CChar> = { () -> UnsafePointer<CChar> in
   let size = tokensO.count
-  let res  = UnsafeMutablePointer<CChar>.alloc(size)
-  tokensO.withUnsafeBufferPointer { p in
+  #if swift(>=3.0) // #swift3-ptr
+    let res  = UnsafeMutablePointer<CChar>(allocatingCapacity: size)
+  #else
+    let res  = UnsafeMutablePointer<CChar>.alloc(size)
+  #endif
+  _ = tokensO.withUnsafeBufferPointer { p in
     memcpy(UnsafeMutablePointer<Void>(res),
            UnsafePointer<Void>(p.baseAddress), size)
   }
@@ -165,8 +169,12 @@ private let unhexO : [ Int8 ] = [
 ]
 let unhex : UnsafePointer<Int8> = { () -> UnsafePointer<Int8> in
   let size = unhexO.count
-  let res  = UnsafeMutablePointer<Int8>.alloc(size)
-  unhexO.withUnsafeBufferPointer { p in
+  #if swift(>=3.0) // #swift3-ptr
+    let res  = UnsafeMutablePointer<Int8>(allocatingCapacity: size)
+  #else
+    let res  = UnsafeMutablePointer<Int8>.alloc(size)
+  #endif
+  _ = unhexO.withUnsafeBufferPointer { p in
     memcpy(UnsafeMutablePointer<Void>(res),
       UnsafePointer<Void>(p.baseAddress), size)
   }
@@ -224,8 +232,12 @@ private let normal_url_charO : [ UInt8 ] /* [32] */ = [
 ]
 private let normal_url_char : UnsafePointer<UInt8> = { () -> UnsafePointer<UInt8> in
   let size = normal_url_charO.count
-  let res  = UnsafeMutablePointer<UInt8>.alloc(size)
-  normal_url_charO.withUnsafeBufferPointer { p in
+  #if swift(>=3.0) // #swift3-ptr
+    let res  = UnsafeMutablePointer<UInt8>(allocatingCapacity: size)
+  #else
+    let res  = UnsafeMutablePointer<UInt8>.alloc(size)
+  #endif
+  _ = normal_url_charO.withUnsafeBufferPointer { p in
     memcpy(UnsafeMutablePointer<Void>(res),
       UnsafePointer<Void>(p.baseAddress), size)
   }
