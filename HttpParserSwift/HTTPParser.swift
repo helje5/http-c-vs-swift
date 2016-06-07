@@ -144,19 +144,6 @@ public class HTTPParser {
     self.upgrade           = false
   
     self.data              = nil
-  
-/*
-    self.cbMessageBegin    = nil
-    self.cbURL             = nil
-    self.cbStatus          = nil
-    self.cbHeaderField     = nil
-    self.cbHeaderValue     = nil
-    self.cbHeadersComplete = nil
-    self.cbBody            = nil
-    self.cbMessageComplete = nil
-    self.cbChunkHeader     = nil
-    self.cbChunkComplete   = nil
- */
   }
   
   // MARK: - Callbacks
