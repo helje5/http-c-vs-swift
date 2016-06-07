@@ -51,7 +51,7 @@ public enum HTTPParserType {
 public typealias http_data_cb = ( HTTPParser, UnsafePointer<CChar>, size_t) -> Int
 public typealias http_cb      = ( HTTPParser ) -> Int
 
-public class HTTPParser {
+public struct HTTPParser {
   // TBD: this could be a struct, except maybe for the callbacks - those would
   //      need to take an inout parameter?
 
@@ -101,16 +101,16 @@ public class HTTPParser {
   var cbChunkHeader     : http_cb? = nil
   var cbChunkComplete   : http_cb? = nil
 
-  public func onMessageBegin   (cb: http_cb)      { cbMessageBegin    = cb }
-  public func onURL            (cb: http_data_cb) { cbURL             = cb }
-  public func onStatus         (cb: http_data_cb) { cbStatus          = cb }
-  public func onHeaderField    (cb: http_data_cb) { cbHeaderField     = cb }
-  public func onHeaderValue    (cb: http_data_cb) { cbHeaderValue     = cb }
-  public func onHeadersComplete(cb: http_cb)      { cbHeadersComplete = cb }
-  public func onBody           (cb: http_data_cb) { cbBody            = cb }
-  public func onMessageComplete(cb: http_cb)      { cbMessageComplete = cb }
-  public func onChunkHeader    (cb: http_cb)      { cbChunkHeader     = cb }
-  public func onChunkComplete  (cb: http_cb)      { cbChunkComplete   = cb }
+  public mutating func onMessageBegin   (cb: http_cb)      { cbMessageBegin    = cb }
+  public mutating func onURL            (cb: http_data_cb) { cbURL             = cb }
+  public mutating func onStatus         (cb: http_data_cb) { cbStatus          = cb }
+  public mutating func onHeaderField    (cb: http_data_cb) { cbHeaderField     = cb }
+  public mutating func onHeaderValue    (cb: http_data_cb) { cbHeaderValue     = cb }
+  public mutating func onHeadersComplete(cb: http_cb)      { cbHeadersComplete = cb }
+  public mutating func onBody           (cb: http_data_cb) { cbBody            = cb }
+  public mutating func onMessageComplete(cb: http_cb)      { cbMessageComplete = cb }
+  public mutating func onChunkHeader    (cb: http_cb)      { cbChunkHeader     = cb }
+  public mutating func onChunkComplete  (cb: http_cb)      { cbChunkComplete   = cb }
 
   
   // MARK: - Init
@@ -122,7 +122,7 @@ public class HTTPParser {
     self.state = startState
   }
 
-  public func reset(type t: HTTPParserType = .Both) {
+  public mutating func reset(type t: HTTPParserType = .Both) {
     self.type              = t
     self.flags             = HTTPParserOptions()
     self.state             = startState
@@ -184,7 +184,7 @@ public class HTTPParser {
   // FIXME: the error codes are wrong
   
   /// Run the notify callback FOR, returning ER if it fails
-  @inline(__always) func CALLBACK_NOTIFY_(_ cbe           : Callback,
+  @inline(__always) mutating func CALLBACK_NOTIFY_(_ cbe           : Callback,
                         _ CURRENT_STATE : inout ParserState,
                         _ ER            : size_t)
        -> size_t?
@@ -210,7 +210,7 @@ public class HTTPParser {
   }
   
   /// Run the notify callback FOR and consume the current byte
-  @inline(__always) func CALLBACK_NOTIFY(_ cb            : Callback,
+  @inline(__always) mutating func CALLBACK_NOTIFY(_ cb            : Callback,
                        _ CURRENT_STATE : inout ParserState,
                        _ p:    UnsafePointer<CChar>?,
                        _ data: UnsafePointer<CChar>?)
@@ -227,7 +227,7 @@ public class HTTPParser {
   }
   
   /// Run the notify callback FOR and don't consume the current byte
-  @inline(__always) func CALLBACK_NOTIFY_NOADVANCE(_ cb            : Callback,
+  @inline(__always) mutating func CALLBACK_NOTIFY_NOADVANCE(_ cb            : Callback,
                                  _ CURRENT_STATE : inout ParserState,
                                  _ p:    UnsafePointer<CChar>?,
                                  _ data: UnsafePointer<CChar>?)
@@ -247,7 +247,7 @@ public class HTTPParser {
   //      directly patch the `mark`
   
   /// Run data callback FOR with LEN bytes, returning ER if it fails
-  @inline(__always) func CALLBACK_DATA_(_ cbe           : Callback,
+  @inline(__always) mutating func CALLBACK_DATA_(_ cbe           : Callback,
                       _ mark          : inout UnsafePointer<CChar>?,
                       _ CURRENT_STATE : inout ParserState,
                       _ len: size_t, _ ER: size_t)
@@ -286,7 +286,7 @@ public class HTTPParser {
   }
   
   /// Run the data callback FOR and consume the current byte
-  @inline(__always) func CALLBACK_DATA(_ cb            : Callback,
+  @inline(__always) mutating func CALLBACK_DATA(_ cb            : Callback,
                      _ mark          : inout UnsafePointer<CChar>?,
                      _ CURRENT_STATE : inout ParserState,
                      _ p:    UnsafePointer<CChar>?,
@@ -300,7 +300,7 @@ public class HTTPParser {
     return CALLBACK_DATA_(cb, &mark, &CURRENT_STATE, len, er)
   }
   /// Run the data callback FOR and consume the current byte
-  @inline(__always) func CALLBACK_DATA_NOADVANCE(_ cb: Callback,
+  @inline(__always) mutating func CALLBACK_DATA_NOADVANCE(_ cb: Callback,
                                _ mark : inout UnsafePointer<CChar>?,
                                _ CURRENT_STATE : inout ParserState,
                                _ p:    UnsafePointer<CChar>?,
@@ -319,7 +319,7 @@ public class HTTPParser {
   
   /// Executes the parser. Returns number of parsed bytes. Sets
   /// `error` on error.
-  public func execute(_ data: UnsafePointer<CChar>?, _ len: size_t) -> size_t {
+  public mutating func execute(_ data: UnsafePointer<CChar>?, _ len: size_t) -> size_t {
     /* We're in an error state. Don't bother doing anything. */
     guard error == .OK else { return 0 }
     
@@ -1710,7 +1710,7 @@ public class HTTPParser {
      return RETURN(len)
   }
  
-  public func pause() {
+  public mutating func pause() {
     /* Users should only be pausing/unpausing a parser that is not in an error
      * state. In non-debug builds, there's not much that we can do about this
      * other than ignore it.
@@ -1721,7 +1721,7 @@ public class HTTPParser {
       assert(false, "Attempting to pause parser in error state")
     }
   }
-  public func resume() {
+  public mutating func resume() {
     if error == .OK || error == .PAUSED {
       error = .OK
     } else {
@@ -1738,7 +1738,7 @@ public class HTTPParser {
   
   // MARK: - Implementation
   
-  @inline(__always) func STRICT_CHECK(_ condition: Bool) -> Bool {
+  @inline(__always) mutating func STRICT_CHECK(_ condition: Bool) -> Bool {
     // the original has a 'goto error'
     if HTTP_PARSER_STRICT {
       if condition {
@@ -1805,7 +1805,7 @@ public class HTTPParser {
    * than any reasonable request or response so this should never affect
    * day-to-day operation.
    */
-  @inline(__always) func COUNT_HEADER_SIZE(_ V: Int) -> Bool {
+  @inline(__always) mutating func COUNT_HEADER_SIZE(_ V: Int) -> Bool {
     self.nread += V
     if self.nread > HTTP_MAX_HEADER_SIZE {
       error = .HEADER_OVERFLOW
