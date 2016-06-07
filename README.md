@@ -27,6 +27,18 @@ The port has NOT been optimized for speed at all.
   such are range-checked etc
 - callbacks are done using regular Swift closures
 
+### Ideas to get the Swift faster
+
+Instruments says that almost all the time is lost in ARC.
+
+- the dispatch tables are stored in global-let's, does this always
+  have a dispatch_once overhead?
+  - the parser might need to grab a copy of the pointer on startup
+    or execute,
+    but the macros would need to move into the parser.
+- the callback closure invocations are pretty slow, we may be able
+  to convert such to convention(c) closures
+- would unwrapping the nested funcs have any perf advantage?
 
 ## RESULTS
 
