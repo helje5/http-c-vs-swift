@@ -52,7 +52,7 @@ Swift 2.2 - Release Build, safety checks off (doesn't matter)
     [3] time: 885ms
     [4] time: 882ms
     -----
-    Total: 4418ms COUNT: 20
+    Total: 4418ms COUNT: 20 **WRONG** Closures are reset
 
 Swift 3 2016-05-31
 
@@ -62,7 +62,7 @@ Swift 3 2016-05-31
     [3] time: 905ms
     [4] time: 904ms
     -----
-    Total: 4516ms COUNT: 20
+    Total: 4516ms COUNT: 20 **WRONG** Closures are reset
 
 #### Instruments Says
 
@@ -81,7 +81,7 @@ Swift 2.2
     [3] time: 876ms
     [4] time: 889ms
     -----
-    Total: 4410ms COUNT: 20
+    Total: 4410ms COUNT: 20 **WRONG** Closures are reset
 
 Improv not measurable, but then we allocate the parser object just once.
 
@@ -98,7 +98,7 @@ Swift 2.2
     [3] time: 850ms
     [4] time: 851ms
     -----
-    Total: 4251ms COUNT: 20
+    Total: 4251ms COUNT: 20 **WRONG** Closures are reset
 
 A little better, but not much.
 
@@ -107,12 +107,12 @@ A little better, but not much.
 Make funcs which used to be macros in C always-inline. This gives some
 break-through.
 
-    [0] time: 165ms
-    [1] time: 166ms
-    [2] time: 161ms
-    [3] time: 163ms
-    [4] time: 161ms
+    [0] time: 289ms
+    [1] time: 288ms
+    [2] time: 286ms
+    [3] time: 285ms
+    [4] time: 285ms
     -----
-    Total: 816ms COUNT: 20
+    Total: 1433ms COUNT: 10002000
 
-Swift 816ms vs C 490ms
+Swift 1433ms vs C 490ms
