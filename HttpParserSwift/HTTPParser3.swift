@@ -141,6 +141,7 @@ public class HTTPParser {
   
     self.data              = nil
   
+    /*
     self.cbMessageBegin    = nil
     self.cbURL             = nil
     self.cbStatus          = nil
@@ -151,6 +152,7 @@ public class HTTPParser {
     self.cbMessageComplete = nil
     self.cbChunkHeader     = nil
     self.cbChunkComplete   = nil
+*/
   }
   
   // MARK: - Callbacks
