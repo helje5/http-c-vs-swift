@@ -6,6 +6,8 @@
 //  Copyright © 2016 Always Right Institute. All rights reserved.
 //
 
+import func Darwin.memcpy
+
 // Not in Swift: let c : CChar = 'A'
 
 // TODO: move into Literals struct
@@ -107,7 +109,7 @@ let c9 : CChar = 57 // 9
  */
 // Note: Swift has no neat Char=>Code conversion
 // This lowercases the regular chars, and returns 0 for invalid chars.
-private let tokens : [ CChar ] = [
+private let tokensO : [ CChar ] = [
 /*   0 nul    1 soh    2 stx    3 etx    4 eot    5 enq    6 ack    7 bel  */
         0,       0,       0,       0,       0,       0,       0,       0,
 /*   8 bs     9 ht    10 nl    11 vt    12 np    13 cr    14 so    15 si   */
@@ -140,9 +142,18 @@ private let tokens : [ CChar ] = [
        cp,      cq,      cr,      cs,      ct,      cu,      cv,     cw,
 /* 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 del */
        cx,      cy,      cz,       0,  cVDASH,      0,  cTILDE,       0 ]
+private let tokens : UnsafePointer<CChar> = { () -> UnsafePointer<CChar> in
+  let size = tokensO.count
+  let res  = UnsafeMutablePointer<CChar>.alloc(size)
+  tokensO.withUnsafeBufferPointer { p in
+    memcpy(UnsafeMutablePointer<Void>(res),
+           UnsafePointer<Void>(p.baseAddress), size)
+  }
+  return UnsafePointer(res)
+}()
 
 // used in HTTPParser[3]
-let unhex : [ Int8 ] = [
+private let unhexO : [ Int8 ] = [
   -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
   ,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
   ,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
@@ -152,6 +163,15 @@ let unhex : [ Int8 ] = [
   ,-1,10,11,12,13,14,15,-1,-1,-1,-1,-1,-1,-1,-1,-1
   ,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
 ]
+let unhex : UnsafePointer<Int8> = { () -> UnsafePointer<Int8> in
+  let size = unhexO.count
+  let res  = UnsafeMutablePointer<Int8>.alloc(size)
+  unhexO.withUnsafeBufferPointer { p in
+    memcpy(UnsafeMutablePointer<Void>(res),
+      UnsafePointer<Void>(p.baseAddress), size)
+  }
+  return UnsafePointer(res)
+}()
 
 // w/o explicit casts, this takes forever in type inference
 // Note: precalculating the values doesn't give any speedup
@@ -164,7 +184,7 @@ private let b16  = UInt8(16)
 private let b32  = UInt8(32)
 private let b64  = UInt8(64)
 private let b128 = UInt8(128)
-private let normal_url_char : [ UInt8 ] /* [32] */ = [
+private let normal_url_charO : [ UInt8 ] /* [32] */ = [
   /*   0 nul    1 soh    2 stx    3 etx    4 eot    5 enq    6 ack    7 bel  */
   b0    |   b0    |   b0    |   b0    |   b0    |   b0    |   b0    |   b0,
   /*   8 bs     9 ht */
@@ -202,6 +222,15 @@ private let normal_url_char : [ UInt8 ] /* [32] */ = [
   /* 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 del */
   b1    |   b2    |   b4    |   b8    |   b16   |   b32   |   b64   |   b0
 ]
+private let normal_url_char : UnsafePointer<UInt8> = { () -> UnsafePointer<UInt8> in
+  let size = normal_url_charO.count
+  let res  = UnsafeMutablePointer<UInt8>.alloc(size)
+  normal_url_charO.withUnsafeBufferPointer { p in
+    memcpy(UnsafeMutablePointer<Void>(res),
+      UnsafePointer<Void>(p.baseAddress), size)
+  }
+  return UnsafePointer(res)
+}()
 
 /* Macros for character classes; depends on strict-mode  */
 
