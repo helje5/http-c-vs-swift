@@ -162,7 +162,7 @@ private let tokensO : [ CChar ] = [
        cp,      cq,      cr,      cs,      ct,      cu,      cv,     cw,
 /* 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 del */
        cx,      cy,      cz,       0,  cVDASH,      0,  cTILDE,       0 ]
-private let tokens : UnsafePointer<CChar> = copyArrayToBuffer(array: tokensO)
+let tokens : UnsafePointer<CChar> = copyArrayToBuffer(array: tokensO)
 
 // used in HTTPParser[3]
 private let unhexO : [ Int8 ] = [
@@ -226,7 +226,7 @@ private let normal_url_charO : [ UInt8 ] /* [32] */ = [
   /* 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 del */
   b1    |   b2    |   b4    |   b8    |   b16   |   b32   |   b64   |   b0
 ]
-private let normal_url_char : UnsafePointer<UInt8> =
+let normal_url_char : UnsafePointer<UInt8> =
                                 copyArrayToBuffer(array: normal_url_charO)
 
 /* Macros for character classes; depends on strict-mode  */
@@ -236,22 +236,31 @@ let LF : CChar = 10
 
 #if swift(>=3.0) // #swift3-1st-arg
 
+@inline(__always)
 func LOWER   (_ c: CChar) -> CChar { return CChar(UInt8(c) | UInt8(0x20)) }
+
+@inline(__always)
 func IS_ALPHA(_ c: CChar) -> Bool  { return LOWER(c) >= ca && LOWER(c) <= cz }
+
+@inline(__always)
 func IS_NUM  (_ c: CChar) -> Bool  { return c >= c0 && c <= c9 }
 
+@inline(__always)
 func IS_ALPHANUM(_ c: CChar) -> Bool { return IS_ALPHA(c) || IS_NUM(c) }
 
+@inline(__always)
 func IS_HEX(_ c: CChar) -> Bool {
   return (IS_NUM(c) || (LOWER(c) >= ca && LOWER(c) <= cf))
 }
 
+@inline(__always)
 func IS_MARK(_ c: CChar) -> Bool {
   return ((c) == cDASH || (c) ==  95 /* '_' */ || (c) == 46 /* '.' */
        || (c) == 33 /* '!'  */ || (c) == 126 /* '~' */ || (c) == 42 /* '*' */
        || (c) == 92 /* '\'' */ || (c) ==  40 /* '(' */ || (c) == 41 /* ')' */)
 }
 
+@inline(__always)
 func IS_USERINFO_CHAR(_ c: CChar) -> Bool {
   return (IS_ALPHANUM(c) || IS_MARK(c)
        || (c) == 37 /* '%' */ || (c) == 59 /* ';' */ || (c) == 58 /* ':' */
@@ -259,10 +268,12 @@ func IS_USERINFO_CHAR(_ c: CChar) -> Bool {
        || (c) == 36 /* '$' */ || (c) == 44 /* ',' */)
 }
 
+@inline(__always)
 func STRICT_TOKEN(_ c: CChar) -> CChar {
   return tokens[Int(c)]
 }
 
+@inline(__always)
 func TOKEN(_ c: CChar) -> CChar {
   if HTTP_PARSER_STRICT {
     return tokens[Int(c)]
@@ -272,6 +283,7 @@ func TOKEN(_ c: CChar) -> CChar {
   }
 }
 
+@inline(__always)
 func IS_URL_CHAR(_ c: CChar) -> Bool {
   // TODO: I don't get that normal_url_char map yet.
   return c != CR && c != LF && c > 32
@@ -293,6 +305,7 @@ func IS_URL_CHAR(_ c: CChar) -> Bool {
   */
 }
 
+@inline(__always)
 func IS_HOST_CHAR(_ c: CChar) -> Bool {
   if HTTP_PARSER_STRICT {
     return (IS_ALPHANUM(c) || (c) == 46 /* '.' */ || (c) == 45 /* '-' */)

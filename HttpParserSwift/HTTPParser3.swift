@@ -362,7 +362,8 @@ public struct HTTPParser {
       default: break
     }
     
-    @inline(__always) func MARK(_ cbe: Callback /*, p : UnsafePointer<CChar> = p */) {
+    // crashes swiftc: @inline(__always)
+    func MARK(_ cbe: Callback /*, p : UnsafePointer<CChar> = p */) {
       // Note: argument crashes swiftc 2.2
       // #define MARK(FOR) if (!FOR##_mark)  FOR##_mark = p;
       if debugOn { print("  MARK \(cbe)") }
@@ -379,13 +380,15 @@ public struct HTTPParser {
     }
     
     /// transfer `CURRENT_STATE` to `state` ivar and return the given value
-    @inline(__always) func RETURN(_ V: size_t) -> size_t {
+    // crashes swiftc: @inline(__always)
+    func RETURN(_ V: size_t) -> size_t {
       if debugOn { print("RETURN old \(self.state) new \(CURRENT_STATE)") }
       self.state = CURRENT_STATE
       return V
     }
     
-    @inline(__always) func UPDATE_STATE(_ state: ParserState) {
+    // crashes swiftc: @inline(__always)
+    func UPDATE_STATE(_ state: ParserState) {
       if debugOn { print("  UPDATE_STATE \(CURRENT_STATE) => \(state)") }
       CURRENT_STATE = state
     }
@@ -410,7 +413,8 @@ public struct HTTPParser {
     
     // REEXECUTE macro:
     //   if let len = gotoReexecute() { return len } // error?
-    @inline(__always) func step(_ ch: CChar) -> StepResult {
+    // Crashes Swift 0.3 05-31: @inline(__always) 
+    func step(_ ch: CChar) -> StepResult {
       /* reexecute: label */
 
       if debugOn {
