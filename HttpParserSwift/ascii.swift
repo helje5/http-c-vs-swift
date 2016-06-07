@@ -308,40 +308,40 @@ func IS_HOST_CHAR(_ c: CChar) -> Bool {
 
 #else // Swift 2.2
 
-func LOWER(c: CChar) -> CChar { return c | 0x20 } // TODO: hm: UInt8 bitcast?
+@inline(__always) func LOWER(c: CChar) -> CChar { return c | 0x20 } // TODO: hm: UInt8 bitcast?
 
-func IS_ALPHA(c: CChar) -> Bool {
+@inline(__always) func IS_ALPHA(c: CChar) -> Bool {
   return (LOWER(c) >= 97 /* 'a' */ && LOWER(c) <= 122 /* 'z' */)
 }
 
-func IS_NUM(c: CChar) -> Bool {
+@inline(__always) func IS_NUM(c: CChar) -> Bool {
   return ((c) >= 48 /* '0' */ && (c) <= 57 /* '9' */)
 }
 
-func IS_ALPHANUM(c: CChar) -> Bool { return IS_ALPHA(c) || IS_NUM(c) }
+@inline(__always) func IS_ALPHANUM(c: CChar) -> Bool { return IS_ALPHA(c) || IS_NUM(c) }
 
-func IS_HEX(c: CChar) -> Bool {
+@inline(__always) func IS_HEX(c: CChar) -> Bool {
   return (IS_NUM(c) || (LOWER(c) >= 97 /*'a'*/ && LOWER(c) <= 102 /*'f'*/))
 }
 
-func IS_MARK(c: CChar) -> Bool {
+@inline(__always) func IS_MARK(c: CChar) -> Bool {
   return ((c) == 45 /* '-'  */ || (c) ==  95 /* '_' */ || (c) == 46 /* '.' */
        || (c) == 33 /* '!'  */ || (c) == 126 /* '~' */ || (c) == 42 /* '*' */
        || (c) == 92 /* '\'' */ || (c) ==  40 /* '(' */ || (c) == 41 /* ')' */)
 }
 
-func IS_USERINFO_CHAR(c: CChar) -> Bool {
+@inline(__always) func IS_USERINFO_CHAR(c: CChar) -> Bool {
   return (IS_ALPHANUM(c) || IS_MARK(c)
        || (c) == 37 /* '%' */ || (c) == 59 /* ';' */ || (c) == 58 /* ':' */
        || (c) == 38 /* '&' */ || (c) == 61 /* '=' */ || (c) == 43 /* '+' */
        || (c) == 36 /* '$' */ || (c) == 44 /* ',' */)
 }
 
-func STRICT_TOKEN(c: CChar) -> CChar {
+@inline(__always) func STRICT_TOKEN(c: CChar) -> CChar {
   return tokens[Int(c)]
 }
 
-func TOKEN(c: CChar) -> CChar {
+@inline(__always) func TOKEN(c: CChar) -> CChar {
   if HTTP_PARSER_STRICT {
     return tokens[Int(c)]
   }
@@ -350,7 +350,7 @@ func TOKEN(c: CChar) -> CChar {
   }
 }
 
-func IS_URL_CHAR(c: CChar) -> Bool {
+@inline(__always) func IS_URL_CHAR(c: CChar) -> Bool {
   // TODO: I don't get that normal_url_char map yet.
   return c != CR && c != LF && c > 32
   // fatalError("TODO: IS_URL_CHAR")
@@ -371,7 +371,7 @@ func IS_URL_CHAR(c: CChar) -> Bool {
   */
 }
 
-func IS_HOST_CHAR(c: CChar) -> Bool {
+@inline(__always) func IS_HOST_CHAR(c: CChar) -> Bool {
   if HTTP_PARSER_STRICT {
     return (IS_ALPHANUM(c) || (c) == 46 /* '.' */ || (c) == 45 /* '-' */)
   }

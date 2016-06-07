@@ -188,7 +188,7 @@ public class HTTPParser {
   // FIXME: the error codes are wrong
   
   /// Run the notify callback FOR, returning ER if it fails
-  func CALLBACK_NOTIFY_(cbe: Callback,
+  @inline(__always) func CALLBACK_NOTIFY_(cbe: Callback,
                         inout _ CURRENT_STATE : ParserState,
                         _ ER: size_t)
        -> size_t?
@@ -214,7 +214,7 @@ public class HTTPParser {
   }
   
   /// Run the notify callback FOR and consume the current byte
-  func CALLBACK_NOTIFY(cb: Callback,
+  @inline(__always) func CALLBACK_NOTIFY(cb: Callback,
                        inout _ CURRENT_STATE : ParserState,
                        _ p:    UnsafePointer<CChar>,
                        _ data: UnsafePointer<CChar>)
@@ -225,7 +225,7 @@ public class HTTPParser {
   }
   
   /// Run the notify callback FOR and don't consume the current byte
-  func CALLBACK_NOTIFY_NOADVANCE(cb: Callback,
+  @inline(__always) func CALLBACK_NOTIFY_NOADVANCE(cb: Callback,
                                  inout _ CURRENT_STATE : ParserState,
                                  _ p:    UnsafePointer<CChar>,
                                  _ data: UnsafePointer<CChar>)
@@ -239,7 +239,7 @@ public class HTTPParser {
   //      directly patch the `mark`
   
   /// Run data callback FOR with LEN bytes, returning ER if it fails
-  func CALLBACK_DATA_(cbe: Callback,
+  @inline(__always) func CALLBACK_DATA_(cbe: Callback,
                       inout _ mark : UnsafePointer<CChar>,
                       inout _ CURRENT_STATE : ParserState,
                       _ len: size_t, _ ER: size_t)
@@ -278,7 +278,7 @@ public class HTTPParser {
   }
   
   /// Run the data callback FOR and consume the current byte
-  func CALLBACK_DATA(cb: Callback,
+  @inline(__always) func CALLBACK_DATA(cb: Callback,
                      inout _ mark : UnsafePointer<CChar>,
                      inout _ CURRENT_STATE : ParserState,
                      _ p:    UnsafePointer<CChar>,
@@ -287,7 +287,7 @@ public class HTTPParser {
     return CALLBACK_DATA_(cb, &mark, &CURRENT_STATE, p - mark, p - data + 1)
   }
   /// Run the data callback FOR and consume the current byte
-  func CALLBACK_DATA_NOADVANCE(cb: Callback,
+  @inline(__always) func CALLBACK_DATA_NOADVANCE(cb: Callback,
                      inout _ mark : UnsafePointer<CChar>,
                      inout _ CURRENT_STATE : ParserState,
                      _ p:    UnsafePointer<CChar>,
@@ -355,7 +355,7 @@ public class HTTPParser {
       default: break
     }
     
-    func MARK(cbe: Callback /*, p : UnsafePointer<CChar> = p */) {
+    @inline(__always) func MARK(cbe: Callback /*, p : UnsafePointer<CChar> = p */) {
       // Note: argument crashes swiftc 2.2
       // #define MARK(FOR) if (!FOR##_mark)  FOR##_mark = p;
       if debugOn { print("  MARK \(cbe)") }
@@ -372,13 +372,13 @@ public class HTTPParser {
     }
     
     /// transfer `CURRENT_STATE` to `state` ivar and return the given value
-    func RETURN(V: size_t) -> size_t {
+    @inline(__always) func RETURN(V: size_t) -> size_t {
       if debugOn { print("RETURN old \(self.state) new \(CURRENT_STATE)") }
       self.state = CURRENT_STATE
       return V
     }
     
-    func UPDATE_STATE(state: ParserState) {
+    @inline(__always) func UPDATE_STATE(state: ParserState) {
       if debugOn { print("  UPDATE_STATE \(CURRENT_STATE) => \(state)") }
       CURRENT_STATE = state
     }
@@ -403,7 +403,7 @@ public class HTTPParser {
     
     // REEXECUTE macro:
     //   if let len = gotoReexecute() { return len } // error?
-    func step(ch: CChar) -> StepResult {
+    @inline(__always) func step(ch: CChar) -> StepResult {
       /* reexecute: label */
 
       if debugOn {
@@ -1725,7 +1725,7 @@ public class HTTPParser {
   
   // MARK: - Implementation
   
-  func STRICT_CHECK(condition: Bool) -> Bool {
+  @inline(__always) func STRICT_CHECK(condition: Bool) -> Bool {
     // the original has a 'goto error'
     if HTTP_PARSER_STRICT {
       if condition {
