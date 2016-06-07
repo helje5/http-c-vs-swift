@@ -99,6 +99,26 @@ let c7 : CChar = 55
 let c8 : CChar = 56
 let c9 : CChar = 57 // 9
 
+// TBD: Perf: is storing the pointers in a global expensive? (dispatch_once?),
+///     should the resolved pointer be put into the parser structure?
+
+// There is a tiny speed gain by converting the Swift arrays into a C array aka
+// UnsafePointer. Subscripting still works with that.
+func copyArrayToBuffer<T>(array a: [ T ]) -> UnsafePointer<T> {
+  let size = a.count * sizeof(T)
+  
+  #if swift(>=3.0) // #swift3-ptr
+    let res  = UnsafeMutablePointer<CChar>(allocatingCapacity: size)
+  #else
+    let res  = UnsafeMutablePointer<CChar>.alloc(size)
+  #endif
+  
+  _ = a.withUnsafeBufferPointer { p in
+    memcpy(UnsafeMutablePointer<Void>(res),
+      UnsafePointer<Void>(p.baseAddress), size)
+  }
+  return UnsafePointer(res)
+}
 
 /* Tokens as defined by rfc 2616. Also lowercases them.
  *        token       = 1*<any CHAR except CTLs or separators>
@@ -142,19 +162,7 @@ private let tokensO : [ CChar ] = [
        cp,      cq,      cr,      cs,      ct,      cu,      cv,     cw,
 /* 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 del */
        cx,      cy,      cz,       0,  cVDASH,      0,  cTILDE,       0 ]
-private let tokens : UnsafePointer<CChar> = { () -> UnsafePointer<CChar> in
-  let size = tokensO.count
-  #if swift(>=3.0) // #swift3-ptr
-    let res  = UnsafeMutablePointer<CChar>(allocatingCapacity: size)
-  #else
-    let res  = UnsafeMutablePointer<CChar>.alloc(size)
-  #endif
-  _ = tokensO.withUnsafeBufferPointer { p in
-    memcpy(UnsafeMutablePointer<Void>(res),
-           UnsafePointer<Void>(p.baseAddress), size)
-  }
-  return UnsafePointer(res)
-}()
+private let tokens : UnsafePointer<CChar> = copyArrayToBuffer(array: tokensO)
 
 // used in HTTPParser[3]
 private let unhexO : [ Int8 ] = [
@@ -167,19 +175,7 @@ private let unhexO : [ Int8 ] = [
   ,-1,10,11,12,13,14,15,-1,-1,-1,-1,-1,-1,-1,-1,-1
   ,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
 ]
-let unhex : UnsafePointer<Int8> = { () -> UnsafePointer<Int8> in
-  let size = unhexO.count
-  #if swift(>=3.0) // #swift3-ptr
-    let res  = UnsafeMutablePointer<Int8>(allocatingCapacity: size)
-  #else
-    let res  = UnsafeMutablePointer<Int8>.alloc(size)
-  #endif
-  _ = unhexO.withUnsafeBufferPointer { p in
-    memcpy(UnsafeMutablePointer<Void>(res),
-      UnsafePointer<Void>(p.baseAddress), size)
-  }
-  return UnsafePointer(res)
-}()
+let unhex : UnsafePointer<Int8> = copyArrayToBuffer(array: unhexO)
 
 // w/o explicit casts, this takes forever in type inference
 // Note: precalculating the values doesn't give any speedup
@@ -230,19 +226,8 @@ private let normal_url_charO : [ UInt8 ] /* [32] */ = [
   /* 120  x   121  y   122  z   123  {   124  |   125  }   126  ~   127 del */
   b1    |   b2    |   b4    |   b8    |   b16   |   b32   |   b64   |   b0
 ]
-private let normal_url_char : UnsafePointer<UInt8> = { () -> UnsafePointer<UInt8> in
-  let size = normal_url_charO.count
-  #if swift(>=3.0) // #swift3-ptr
-    let res  = UnsafeMutablePointer<UInt8>(allocatingCapacity: size)
-  #else
-    let res  = UnsafeMutablePointer<UInt8>.alloc(size)
-  #endif
-  _ = normal_url_charO.withUnsafeBufferPointer { p in
-    memcpy(UnsafeMutablePointer<Void>(res),
-      UnsafePointer<Void>(p.baseAddress), size)
-  }
-  return UnsafePointer(res)
-}()
+private let normal_url_char : UnsafePointer<UInt8> =
+                                copyArrayToBuffer(array: normal_url_charO)
 
 /* Macros for character classes; depends on strict-mode  */
 
