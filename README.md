@@ -37,7 +37,13 @@ Instruments says that almost all the time is lost in ARC.
     or execute,
     but the macros would need to move into the parser.
 - the callback closure invocations are pretty slow, we may be able
-  to convert such to convention(c) closures
+  to convert such to `convention(c)` closures
+  - Update: this does not seem to be possible at the moment as Swift structs
+            can't be marked as `convention(c)` (hence the callbacks can't be
+            either)
+    - there is an unofficial `convention(thin)`, but that is too easy to crash
+    - we may be forced to switch to a delegate protocol to get appropriate
+      performance
 - would unwrapping the nested funcs have any perf advantage?
 
 ## RESULTS
