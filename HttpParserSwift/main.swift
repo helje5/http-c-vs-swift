@@ -36,47 +36,94 @@ let simpleGet1len = size_t(strlen(simpleGet1))
 
 var count = 0 // to make sure that the optimizer doesn't kill the callbacks?
 var parser = http_parser(type: .Request)
-var settings = http_parser_settings_cb()
-settings.onMessageBegin    { _ in count += 1; return 0 }
-settings.onHeadersComplete { _ in count += 1; return 0 }
-settings.onHeaderField     { _ in count += 1; return 0 }
-settings.onHeaderValue     { _ in count += 1; return 0 }
-settings.onBody            { _ in count += 1; return 0 }
-settings.onStatus          { _ in count += 1; return 0 }
-settings.onURL             { _ in count += 1; return 0 }
-settings.onMessageComplete { _ in
-  count += 1; return 0
+
+
+// direct vtable based imp
+
+struct PerfSettingsCB : http_parser_settings {
+  func onMessageBegin   (parser p : http_parser ) -> Int {
+    count += 1; return 0
+  }
+  func onURL            (parser p : http_parser,
+                         _ data: UnsafePointer<CChar>, _ len: size_t) -> Int
+  {
+    count += 1; return 0
+  }
+  func onStatus         (parser p : http_parser,
+                         _ data: UnsafePointer<CChar>, _ len: size_t) -> Int
+  {
+    count += 1; return 0
+  }
+  func onHeaderField    (parser p : http_parser,
+                         _ data: UnsafePointer<CChar>, _ len: size_t) -> Int
+  {
+    count += 1; return 0
+  }
+  func onHeaderValue    (parser p : http_parser,
+                         _ data: UnsafePointer<CChar>, _ len: size_t) -> Int
+  {
+    count += 1; return 0
+  }
+  func onHeadersComplete(parser p : http_parser ) -> Int {
+    count += 1; return 0
+  }
+  func onBody           (parser p : http_parser,
+                         _ data: UnsafePointer<CChar>, _ len: size_t) -> Int
+  {
+    count += 1; return 0
+  }
+  func onMessageComplete(parser p : http_parser ) -> Int {
+    count += 1; return 0
+  }
 }
 
-// warm up
-print("Warming up ...")
-for _ in 0..<warmupCount {
-  assert(parser.error == .OK)
-  let nb = parser.execute(settings, simpleGet1, simpleGet1len)
-  assert(nb == simpleGet1len)
-  _ = parser.execute(settings, nil, 0) // EOF
-  parser.reset()
-}
-print("done.")
+
+// closure based imp
+
+var ClosureSettings = http_parser_settings_cb()
+ClosureSettings.onMessageBegin    { _ in count += 1; return 0 }
+ClosureSettings.onHeadersComplete { _ in count += 1; return 0 }
+ClosureSettings.onHeaderField     { _ in count += 1; return 0 }
+ClosureSettings.onHeaderValue     { _ in count += 1; return 0 }
+ClosureSettings.onBody            { _ in count += 1; return 0 }
+ClosureSettings.onStatus          { _ in count += 1; return 0 }
+ClosureSettings.onURL             { _ in count += 1; return 0 }
+ClosureSettings.onMessageComplete { _ in count += 1; return 0 }
 
 
-var totalMS = 0
-for i in 0..<testIterations {
-  let startTS = timespec.monotonic()
-
-  for _ in 0..<testCount {
+func runTest(withSettings settings: http_parser_settings) {
+  // warm up
+  print("Warming up ...")
+  for _ in 0..<warmupCount {
     assert(parser.error == .OK)
     let nb = parser.execute(settings, simpleGet1, simpleGet1len)
     assert(nb == simpleGet1len)
     _ = parser.execute(settings, nil, 0) // EOF
-    parser.reset(type: .Request)
+    parser.reset()
   }
+  print("done.")
 
-  let endTS = timespec.monotonic()
-  let diff  = (endTS - startTS).milliseconds
-  totalMS += diff
-  
-  print("[\(i)] time: \(diff)ms")
+
+  var totalMS = 0
+  for i in 0..<testIterations {
+    let startTS = timespec.monotonic()
+
+    for _ in 0..<testCount {
+      assert(parser.error == .OK)
+      let nb = parser.execute(settings, simpleGet1, simpleGet1len)
+      assert(nb == simpleGet1len)
+      _ = parser.execute(settings, nil, 0) // EOF
+      parser.reset(type: .Request)
+    }
+
+    let endTS = timespec.monotonic()
+    let diff  = (endTS - startTS).milliseconds
+    totalMS += diff
+    
+    print("[\(i)] time: \(diff)ms")
+  }
+  print("-----\nTotal: \(totalMS)ms COUNT: \(count)")
 }
-print("-----\nTotal: \(totalMS)ms COUNT: \(count)")
 
+runTest(withSettings: PerfSettingsCB())
+runTest(withSettings: ClosureSettings)
