@@ -48,6 +48,14 @@ Instruments says that almost all the time is lost in ARC.
 
 ## RESULTS
 
+Bottom line so far:
+
+- C version is very fast (>20m requests per sec)
+- Swift 2.3 is 3x slower than C, but 6.5x faster than Swift 3p4
+- Swift 3p4 is really slow, maybe debug code related?
+
+Obviously I may have made mistakes, as before :-)
+
 ### 2016-08-08 master
 
 MacPro 3.7 GHz Quad-Core Intel Xeon E5
