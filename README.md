@@ -52,7 +52,7 @@ Instruments says that almost all the time is lost in ARC.
 
 MacPro 3.7 GHz Quad-Core Intel Xeon E5
 
-C Version - Release Build (2016-08-08):
+#### C Version - Release Build (2016-08-08):
 
     [0] time: 93ms
     [1] time: 93ms
@@ -62,19 +62,31 @@ C Version - Release Build (2016-08-08):
     -----
     Total: 471ms COUNT: 10002000
 
-Swift 2.2 - Release Build, safety checks off (doesn't matter)
+#### Swift 2.3 (2016-08-08) - Release Build, safety checks off
 
-    [0] time: 890ms
-    [1] time: 881ms
-    [2] time: 880ms
-    [3] time: 885ms
-    [4] time: 882ms
+##### struct vtable:
+
+    [0] time: 311ms
+    [1] time: 306ms
+    [2] time: 308ms
+    [3] time: 305ms
+    [4] time: 308ms
     -----
-    Total: 4418ms COUNT: 20 **WRONG** Closures are reset
+    Total: 1538ms COUNT: 10002000
 
-Swift 3 Preview 4  (2016-08-08)
+##### protocol with closures:
 
-struct vtable:
+    [0] time: 1919ms
+    [1] time: 1953ms
+    [2] time: 1934ms
+    [3] time: 1916ms
+    [4] time: 1932ms
+    -----
+    Total: 9654ms COUNT: 20004000
+
+#### Swift 3 Preview 4 (2016-08-08) - Release Build, safety checks off
+
+##### struct vtable:
 
     [0] time: 2021ms
     [1] time: 2017ms
@@ -84,7 +96,7 @@ struct vtable:
     -----
     Total: 10106ms COUNT: 10002000
 
-protocol with closures:
+##### protocol with closures:
 
     [0] time: 3865ms
     [1] time: 3873ms

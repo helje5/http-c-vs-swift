@@ -234,7 +234,7 @@ extension HTTPStatus : CustomStringConvertible {
 
 #if swift(>=3.0) // #swift3-fd
 #else
-typealias ExpressibleByIntegerLiteral = integerLiteralConvertible
+typealias ExpressibleByIntegerLiteral = IntegerLiteralConvertible
 #endif
 
 extension HTTPStatus : ExpressibleByIntegerLiteral {
