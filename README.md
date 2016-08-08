@@ -48,7 +48,7 @@ Instruments says that almost all the time is lost in ARC.
 
 ## RESULTS
 
-### 2016-06-07 aka lazy-port-1
+### 2016-08-08 master
 
 MacPro 3.7 GHz Quad-Core Intel Xeon E5
 
