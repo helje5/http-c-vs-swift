@@ -52,15 +52,15 @@ Instruments says that almost all the time is lost in ARC.
 
 MacPro 3.7 GHz Quad-Core Intel Xeon E5
 
-C Version - Release Build:
+C Version - Release Build (2016-08-08):
 
-    [0] time: 97ms
-    [1] time: 97ms
-    [2] time: 101ms
-    [3] time: 97ms
-    [4] time: 98ms
+    [0] time: 93ms
+    [1] time: 93ms
+    [2] time: 96ms
+    [3] time: 95ms
+    [4] time: 94ms
     -----
-    Total: 490ms COUNT: 10002000
+    Total: 471ms COUNT: 10002000
 
 Swift 2.2 - Release Build, safety checks off (doesn't matter)
 
@@ -72,65 +72,42 @@ Swift 2.2 - Release Build, safety checks off (doesn't matter)
     -----
     Total: 4418ms COUNT: 20 **WRONG** Closures are reset
 
-Swift 3 2016-05-31
+Swift 3 Preview 4  (2016-08-08)
 
-    [0] time: 910ms
-    [1] time: 897ms
-    [2] time: 900ms
-    [3] time: 905ms
-    [4] time: 904ms
+struct vtable:
+
+    [0] time: 2021ms
+    [1] time: 2017ms
+    [2] time: 2027ms
+    [3] time: 2020ms
+    [4] time: 2021ms
     -----
-    Total: 4516ms COUNT: 20 **WRONG** Closures are reset
+    Total: 10106ms COUNT: 10002000
+
+protocol with closures:
+
+    [0] time: 3865ms
+    [1] time: 3873ms
+    [2] time: 3905ms
+    [3] time: 3875ms
+    [4] time: 3880ms
+    -----
+    Total: 19398ms COUNT: 20004000
+
 
 #### Instruments Says
 
 - lots of ARC killing perf
+  - TODO: check with latest w/o closures
 
 ### struct-parser branch
 
-In this the parser object is a struct, hence no dynamic dispatch on parser
-funcs.
-
-Swift 2.2
-
-    [0] time: 886ms
-    [1] time: 880ms
-    [2] time: 879ms
-    [3] time: 876ms
-    [4] time: 889ms
-    -----
-    Total: 4410ms COUNT: 20 **WRONG** Closures are reset
-
-Improv not measurable, but then we allocate the parser object just once.
+- this is in `master` now
 
 ### lookup-tables branch
 
-In this the Swift-array lookup tables are replaced with UnsafePointer<T> to
-avoid runtime checks.
-
-Swift 2.2
-
-    [0] time: 853ms
-    [1] time: 850ms
-    [2] time: 847ms
-    [3] time: 850ms
-    [4] time: 851ms
-    -----
-    Total: 4251ms COUNT: 20 **WRONG** Closures are reset
-
-A little better, but not much.
+- this is in `master` now
 
 ### always-inline branch
 
-Make funcs which used to be macros in C always-inline. This gives some
-break-through.
-
-    [0] time: 289ms
-    [1] time: 288ms
-    [2] time: 286ms
-    [3] time: 285ms
-    [4] time: 285ms
-    -----
-    Total: 1433ms COUNT: 10002000
-
-Swift 1433ms vs C 490ms
+- this is in `master` now

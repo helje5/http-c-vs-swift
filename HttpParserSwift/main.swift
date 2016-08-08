@@ -93,6 +93,11 @@ ClosureSettings.onMessageComplete { _ in count += 1; return 0 }
 
 func runTest(withSettings settings: http_parser_settings) {
   // warm up
+  #if swift(>=3.0) // #swift3-inout
+    print("Swift 3")
+  #else
+    print("Swift 2")
+  #endif
   print("Warming up ...")
   for _ in 0..<warmupCount {
     assert(parser.error == .OK)
