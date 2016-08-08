@@ -17,7 +17,7 @@ func loadTestDataIntoBuffer(path p: String) -> UnsafePointer<CChar> {
   assert(fh != nil)
   
   #if swift(>=3.0) // #swift3-inout
-    let buf = UnsafeMutablePointer<UInt8>(allocatingCapacity: 16000)
+    let buf = UnsafeMutablePointer<UInt8>.allocate(capacity: 16000)
   #else
     let buf = UnsafeMutablePointer<UInt8>.alloc(16000)
   #endif
@@ -35,15 +35,16 @@ let simpleGet1len = size_t(strlen(simpleGet1))
 
 
 var count = 0 // to make sure that the optimizer doesn't kill the callbacks?
-let parser = HTTPParser(type: .Request)
-parser.onMessageBegin    { _ in count += 1; return 0 }
-parser.onHeadersComplete { _ in count += 1; return 0 }
-parser.onHeaderField     { _ in count += 1; return 0 }
-parser.onHeaderValue     { _ in count += 1; return 0 }
-parser.onBody            { _ in count += 1; return 0 }
-parser.onStatus          { _ in count += 1; return 0 }
-parser.onURL             { _ in count += 1; return 0 }
-parser.onMessageComplete { _ in
+var parser = http_parser(type: .Request)
+var settings = http_parser_settings_cb()
+settings.onMessageBegin    { _ in count += 1; return 0 }
+settings.onHeadersComplete { _ in count += 1; return 0 }
+settings.onHeaderField     { _ in count += 1; return 0 }
+settings.onHeaderValue     { _ in count += 1; return 0 }
+settings.onBody            { _ in count += 1; return 0 }
+settings.onStatus          { _ in count += 1; return 0 }
+settings.onURL             { _ in count += 1; return 0 }
+settings.onMessageComplete { _ in
   count += 1; return 0
 }
 
@@ -51,9 +52,9 @@ parser.onMessageComplete { _ in
 print("Warming up ...")
 for _ in 0..<warmupCount {
   assert(parser.error == .OK)
-  let nb = parser.execute(simpleGet1, simpleGet1len)
+  let nb = parser.execute(settings, simpleGet1, simpleGet1len)
   assert(nb == simpleGet1len)
-  _ = parser.execute(nil, 0) // EOF
+  _ = parser.execute(settings, nil, 0) // EOF
   parser.reset()
 }
 print("done.")
@@ -65,9 +66,9 @@ for i in 0..<testIterations {
 
   for _ in 0..<testCount {
     assert(parser.error == .OK)
-    let nb = parser.execute(simpleGet1, simpleGet1len)
+    let nb = parser.execute(settings, simpleGet1, simpleGet1len)
     assert(nb == simpleGet1len)
-    _ = parser.execute(nil, 0) // EOF
+    _ = parser.execute(settings, nil, 0) // EOF
     parser.reset(type: .Request)
   }
 

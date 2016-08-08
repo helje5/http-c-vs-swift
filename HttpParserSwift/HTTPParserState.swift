@@ -7,11 +7,12 @@
 //
 
 #if swift(>=3.0) // #swift3-fd
-public typealias OptionSetType = OptionSet
+#else
+public typealias OptionSet = OptionSetType
 #endif
 
 // enum in original
-public struct HTTPParserOptions : OptionSetType {
+public struct HTTPParserOptions : OptionSet {
   // Use: let justChunked = HTTPParserOptions.F_CHUNKED
   //      let two : HTTPParserOptions = [ F_CHUNKED, F_CONNECTION_CLOSE]
   //      two.contains(.F_CONNECTION_CLOSE)
@@ -31,7 +32,7 @@ public struct HTTPParserOptions : OptionSetType {
   static let F_SKIPBODY              = HTTPParserOptions(rawValue: 1 << 6)
 }
 
-enum ParserState : Int {
+enum ParserState : Int8 {
   case s_dead = 1 /* important that this is > 0 */
   
   case s_start_req_or_res

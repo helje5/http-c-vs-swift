@@ -44,7 +44,7 @@ public enum HTTPStatus : Equatable {
 }
 
 #if swift(>=3.0) // #swift3-fd
-extension HTTPStatus : Boolean {
+extension HTTPStatus {
   public var boolValue : Bool { return status >= 200 && status < 300 }
 }
 #else
@@ -232,7 +232,12 @@ extension HTTPStatus : CustomStringConvertible {
   
 }
 
-extension HTTPStatus : IntegerLiteralConvertible {
+#if swift(>=3.0) // #swift3-fd
+#else
+typealias ExpressibleByIntegerLiteral = integerLiteralConvertible
+#endif
+
+extension HTTPStatus : ExpressibleByIntegerLiteral {
   // this allows: let status : HTTPStatus = 418
   
   public init(integerLiteral value: Int) {

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E8AD01EA1D591FBF00D6DB81 /* http_parser_settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AD01E61D591FBF00D6DB81 /* http_parser_settings.swift */; };
+		E8AD01EB1D591FBF00D6DB81 /* http_parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AD01E71D591FBF00D6DB81 /* http_parser.swift */; };
+		E8AD01EC1D591FBF00D6DB81 /* http_parser2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AD01E81D591FBF00D6DB81 /* http_parser2.swift */; };
+		E8AD01ED1D591FBF00D6DB81 /* http_parser3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AD01E91D591FBF00D6DB81 /* http_parser3.swift */; };
 		E8CA275D1D0616F10024FC30 /* timespec.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CA275C1D0616F10024FC30 /* timespec.swift */; };
 		E8DD1C151D061229001F60FE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C141D061229001F60FE /* main.swift */; };
 		E8DD1C201D061238001F60FE /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C1F1D061238001F60FE /* main.c */; };
@@ -15,8 +19,6 @@
 		E8DD1C391D061309001F60FE /* CString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C2E1D061309001F60FE /* CString.swift */; };
 		E8DD1C3A1D061309001F60FE /* HTTPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C2F1D061309001F60FE /* HTTPError.swift */; };
 		E8DD1C3B1D061309001F60FE /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C301D061309001F60FE /* HTTPMethod.swift */; };
-		E8DD1C3C1D061309001F60FE /* HTTPParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C311D061309001F60FE /* HTTPParser.swift */; };
-		E8DD1C3D1D061309001F60FE /* HTTPParser3.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C321D061309001F60FE /* HTTPParser3.swift */; };
 		E8DD1C3E1D061309001F60FE /* HTTPParserState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C331D061309001F60FE /* HTTPParserState.swift */; };
 		E8DD1C3F1D061309001F60FE /* HTTPStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C341D061309001F60FE /* HTTPStatus.swift */; };
 		E8DD1C411D061309001F60FE /* URLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DD1C371D061309001F60FE /* URLParser.swift */; };
@@ -45,6 +47,10 @@
 
 /* Begin PBXFileReference section */
 		E837B3DF1D06323900884455 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E8AD01E61D591FBF00D6DB81 /* http_parser_settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = http_parser_settings.swift; sourceTree = "<group>"; };
+		E8AD01E71D591FBF00D6DB81 /* http_parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = http_parser.swift; sourceTree = "<group>"; };
+		E8AD01E81D591FBF00D6DB81 /* http_parser2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = http_parser2.swift; sourceTree = "<group>"; };
+		E8AD01E91D591FBF00D6DB81 /* http_parser3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = http_parser3.swift; sourceTree = "<group>"; };
 		E8CA275B1D0616500024FC30 /* TestData */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestData; sourceTree = "<group>"; };
 		E8CA275C1D0616F10024FC30 /* timespec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = timespec.swift; sourceTree = "<group>"; };
 		E8CA275E1D0619610024FC30 /* timespec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timespec.h; sourceTree = "<group>"; };
@@ -63,8 +69,6 @@
 		E8DD1C2E1D061309001F60FE /* CString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CString.swift; sourceTree = "<group>"; };
 		E8DD1C2F1D061309001F60FE /* HTTPError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPError.swift; sourceTree = "<group>"; };
 		E8DD1C301D061309001F60FE /* HTTPMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
-		E8DD1C311D061309001F60FE /* HTTPParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPParser.swift; sourceTree = "<group>"; };
-		E8DD1C321D061309001F60FE /* HTTPParser3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPParser3.swift; sourceTree = "<group>"; };
 		E8DD1C331D061309001F60FE /* HTTPParserState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPParserState.swift; sourceTree = "<group>"; };
 		E8DD1C341D061309001F60FE /* HTTPStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPStatus.swift; sourceTree = "<group>"; };
 		E8DD1C351D061309001F60FE /* LICENSE-MIT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "LICENSE-MIT"; sourceTree = "<group>"; };
@@ -114,11 +118,13 @@
 			isa = PBXGroup;
 			children = (
 				E8DD1C141D061229001F60FE /* main.swift */,
+				E8AD01E71D591FBF00D6DB81 /* http_parser.swift */,
+				E8AD01E61D591FBF00D6DB81 /* http_parser_settings.swift */,
+				E8AD01E81D591FBF00D6DB81 /* http_parser2.swift */,
+				E8AD01E91D591FBF00D6DB81 /* http_parser3.swift */,
 				E8DD1C2C1D061309001F60FE /* ascii.swift */,
 				E8DD1C2F1D061309001F60FE /* HTTPError.swift */,
 				E8DD1C301D061309001F60FE /* HTTPMethod.swift */,
-				E8DD1C311D061309001F60FE /* HTTPParser.swift */,
-				E8DD1C321D061309001F60FE /* HTTPParser3.swift */,
 				E8DD1C331D061309001F60FE /* HTTPParserState.swift */,
 				E8DD1C341D061309001F60FE /* HTTPStatus.swift */,
 				E8DD1C371D061309001F60FE /* URLParser.swift */,
@@ -190,13 +196,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				TargetAttributes = {
 					E8DD1C101D061228001F60FE = {
 						CreatedOnToolsVersion = 7.3;
 					};
 					E8DD1C1C1D061238001F60FE = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -224,16 +231,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8DD1C3A1D061309001F60FE /* HTTPError.swift in Sources */,
+				E8AD01ED1D591FBF00D6DB81 /* http_parser3.swift in Sources */,
 				E8DD1C391D061309001F60FE /* CString.swift in Sources */,
+				E8AD01EB1D591FBF00D6DB81 /* http_parser.swift in Sources */,
 				E8DD1C3F1D061309001F60FE /* HTTPStatus.swift in Sources */,
-				E8DD1C3C1D061309001F60FE /* HTTPParser.swift in Sources */,
 				E8DD1C151D061229001F60FE /* main.swift in Sources */,
-				E8DD1C3D1D061309001F60FE /* HTTPParser3.swift in Sources */,
 				E8DD1C3B1D061309001F60FE /* HTTPMethod.swift in Sources */,
 				E8DD1C3E1D061309001F60FE /* HTTPParserState.swift in Sources */,
 				E8DD1C411D061309001F60FE /* URLParser.swift in Sources */,
 				E8CA275D1D0616F10024FC30 /* timespec.swift in Sources */,
 				E8DD1C381D061309001F60FE /* ascii.swift in Sources */,
+				E8AD01EA1D591FBF00D6DB81 /* http_parser_settings.swift in Sources */,
+				E8AD01EC1D591FBF00D6DB81 /* http_parser2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,12 +261,48 @@
 		E8D8837D1D06009D007D7307 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
 		E8D8837E1D06009D007D7307 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 			};
 			name = Release;
 		};
@@ -305,6 +350,7 @@
 				SDKROOT = macosx;
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -345,6 +391,7 @@
 				SDKROOT = macosx;
 				SWIFT_DISABLE_SAFETY_CHECKS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -390,6 +437,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -428,6 +476,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
